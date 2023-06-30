@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
+import { SignUpService } from './signUp/signUp.service';
 
 @Controller('user')
 export class UserController {
-    @Get()
-    test(): string {
-      return "Test: User Controller"
-    }
+  constructor(private signUpService: SignUpService) {}
+
+  @Post("signUp")
+  signUp(): string {
+    return this.signUpService.signUp()
+  }
 }
