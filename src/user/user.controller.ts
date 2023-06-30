@@ -1,5 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { SignInService } from './signIn/signIn.service';
+import { SignInDto } from './signIn/signIn.dto';
 import { SignUpService } from './signUp/signUp.service';
 import { SignUpDto } from './signUp/signUp.dto';
 
@@ -9,8 +10,8 @@ export class UserController {
               private signUpService: SignUpService) {}
 
   @Post("signIn")
-  signIn(): string {
-    return this.signInService.signIn()
+  signIn(@Body() signInDto: SignInDto): string {
+    return this.signInService.signIn(signInDto)
   }
 
   @Post("signUp")
