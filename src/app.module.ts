@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { User } from "./user/entities/user.entity"
 
 @Module({
   imports: [UserModule,
@@ -13,7 +14,7 @@ import { UserModule } from './user/user.module';
               username: process.env.DATABASE_USER,
               password: process.env.DATABASE_PASSWORD,
               database: process.env.DATABASE_NAME,
-              entities: [],
+              entities: [User],
               synchronize: true,
             })]
 })

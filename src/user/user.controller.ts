@@ -15,7 +15,8 @@ export class UserController {
   }
 
   @Post("signUp")
-  signUp(@Body() signUpDto: SignUpDto): string {
-    return this.signUpService.signUp(signUpDto)
+  async signUp(@Body() signUpDto: SignUpDto): Promise<object> {
+    await this.signUpService.signUp(signUpDto)
+    return {is_error:false}
   }
 }
