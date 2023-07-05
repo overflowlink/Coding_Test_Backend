@@ -9,11 +9,9 @@ import { EmailNotFoundException } from './exceptions/emailNotFound.exception';
 export class SignInService {
     constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-    async signIn(signInDto: SignInDto): Promise<string> {
+    async signIn(signInDto: SignInDto): Promise<void> {
         const SIGNIN_USER:User = await this.find_User(signInDto)
         if(SIGNIN_USER == null) throw new EmailNotFoundException()
-
-        return `Test: SignIn Service () > Email : ${SIGNIN_USER.email} / Name : ${SIGNIN_USER.name}`
     }
 
     async find_User(signInDto: SignInDto): Promise<User | null> {

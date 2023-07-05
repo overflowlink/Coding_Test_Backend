@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import { SignInService } from './signIn/signIn.service';
 import { SignInDto } from './signIn/signIn.dto';
 import { SignUpService } from './signUp/signUp.service';
@@ -10,13 +10,14 @@ export class UserController {
               private signUpService: SignUpService) {}
 
   @Post("signIn")
-  async signIn(@Body() signInDto: SignInDto): Promise<string> {
-    return await this.signInService.signIn(signInDto)
+  @HttpCode(200)
+  async signIn(@Body() signInDto: SignInDto): Promise<void> {
+    await this.signInService.signIn(signInDto)
   }
 
   @Post("signUp")
-  async signUp(@Body() signUpDto: SignUpDto): Promise<object> {
+  @HttpCode(200)
+  async signUp(@Body() signUpDto: SignUpDto): Promise<void> {
     await this.signUpService.signUp(signUpDto)
-    return {is_error:false}
   }
 }
