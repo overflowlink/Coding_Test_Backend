@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SignInDto } from './signIn.dto';
 import { User } from "../entities/user.entity"
+import { Email_Not_Found_Exception } from './exceptions';
 
 @Injectable()
 export class SignInService {
@@ -10,7 +11,7 @@ export class SignInService {
 
     async signIn(signInDto: SignInDto): Promise<string> {
         const SIGNIN_USER:User = await this.find_User(signInDto)
-        if(SIGNIN_USER == null) return "No User"
+        if(SIGNIN_USER == null) throw new Email_Not_Found_Exception()
 
         return `Test: SignIn Service () > Email : ${SIGNIN_USER.email} / Name : ${SIGNIN_USER.name}`
     }
