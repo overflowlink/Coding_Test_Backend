@@ -10,8 +10,8 @@ export class UserController {
               private signUpService: SignUpService) {}
 
   @Post("signIn")
-  signIn(@Body() signInDto: SignInDto): string {
-    return this.signInService.signIn(signInDto)
+  async signIn(@Body() signInDto: SignInDto): Promise<string> {
+    return await this.signInService.signIn(signInDto)
   }
 
   @Post("signUp")
