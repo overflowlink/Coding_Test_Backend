@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SignInDto } from './signIn.dto';
 import { User } from "../entities/user.entity"
-import { Email_Not_Found_Exception } from './exceptions';
+import { Email_Not_Found_Exception } from './exceptions/emailNotFound.exception';
 
 @Injectable()
 export class SignInService {
