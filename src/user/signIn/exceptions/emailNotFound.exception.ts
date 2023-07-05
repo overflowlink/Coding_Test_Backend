@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 
-export class Email_Not_Found_Exception extends BadRequestException
+export class EmailNotFoundException extends BadRequestException
 {
     constructor() {
         super("Email not found exception",
