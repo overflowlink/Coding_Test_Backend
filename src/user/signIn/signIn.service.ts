@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { SignInDto } from './signIn.dto';
 import { User } from "../entities/user.entity"
 import { EmailNotFoundException } from './exceptions/emailNotFound.exception';
+import { InvalidPasswordException } from './exceptions/invalidPassword.exception';
 
 @Injectable()
 export class SignInService {
@@ -12,12 +13,12 @@ export class SignInService {
     async signIn(signInDto: SignInDto): Promise<void> {
         const SIGNIN_USER:User = await this.find_User(signInDto)
         if(SIGNIN_USER == null) throw new EmailNotFoundException()
+        if(signInDto.userPassword != SIGNIN_USER.password) throw new InvalidPasswordException()
     }
 
     async find_User(signInDto: SignInDto): Promise<User | null> {
         return await this.usersRepository.findOneBy({
-            email: signInDto.userEmail, 
-            password: signInDto.userPassword
+            email: signInDto.userEmail
         })
     }
 }
