@@ -12,9 +12,20 @@ export class SignInService {
 
     async signIn(signInDto: SignInDto): Promise<void> {
         const SIGNIN_USER:User = await this.__find_User(signInDto)
-        if(SIGNIN_USER == null) throw new EmailNotFoundException()
-        if(signInDto.userPassword != SIGNIN_USER.password) throw new InvalidPasswordException()
+
+        this.__raiseIfEmailNotFound(SIGNIN_USER)
+        this.__raiseIfPasswordInvalid(signInDto, SIGNIN_USER)
     }
+
+
+    private __raiseIfEmailNotFound(signInUser: User): void {
+        if(signInUser == null) throw new EmailNotFoundException()
+    }
+
+    private __raiseIfPasswordInvalid(signInDto: SignInDto, signInUser: User): void {
+        if(signInDto.userPassword != signInUser.password) throw new InvalidPasswordException()
+    }
+
 
     private async __find_User(signInDto: SignInDto): Promise<User | null> {
         return await this.__usersRepository.findOneBy({

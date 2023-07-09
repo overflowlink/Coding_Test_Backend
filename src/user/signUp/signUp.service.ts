@@ -11,17 +11,26 @@ export class SignUpService {
     constructor(@InjectRepository(User) private __usersRepository: Repository<User>) {}
 
     async signUp(signUpDto: SignUpDto): Promise<void> {
-        if((await this.__findUserByEmail(signUpDto)) != null) throw new EmailAlreadyExistException()
-        if((await this.__findUserByName(signUpDto)) != null) throw new NameAlreadyExistException()
+        await this.__raiseIfEmailExist(signUpDto)
+        await this.__raiseIfNameExist(signUpDto)
         
         await this.__insertUser(signUpDto)
     }
 
 
+    private async __raiseIfEmailExist(signUpDto: SignUpDto): Promise<void> {
+        if((await this.__findUserByEmail(signUpDto)) != null) throw new EmailAlreadyExistException()
+    }
+
     private async __findUserByEmail(signUpDto: SignUpDto): Promise<User | null> {
         return await this.__usersRepository.findOneBy({
             email: signUpDto.userEmail
         })
+    }
+
+
+    private async __raiseIfNameExist(signUpDto: SignUpDto): Promise<void> {
+        if((await this.__findUserByName(signUpDto)) != null) throw new NameAlreadyExistException()
     }
 
     private async __findUserByName(signUpDto: SignUpDto): Promise<User | null> {
