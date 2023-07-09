@@ -6,18 +6,18 @@ import { SignUpDto } from './signUp/signUp.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private signInService: SignInService,
-              private signUpService: SignUpService) {}
+  constructor(private __signInService: SignInService,
+              private __signUpService: SignUpService) {}
 
   @Post("signIn")
   @HttpCode(200)
   async signIn(@Body() signInDto: SignInDto): Promise<void> {
-    await this.signInService.signIn(signInDto)
+    await this.__signInService.signIn(signInDto)
   }
 
   @Post("signUp")
   @HttpCode(200)
   async signUp(@Body() signUpDto: SignUpDto): Promise<void> {
-    await this.signUpService.signUp(signUpDto)
+    await this.__signUpService.signUp(signUpDto)
   }
 }

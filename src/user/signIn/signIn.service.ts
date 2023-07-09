@@ -8,16 +8,16 @@ import { InvalidPasswordException } from './exceptions/invalidPassword.exception
 
 @Injectable()
 export class SignInService {
-    constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+    constructor(@InjectRepository(User) private __usersRepository: Repository<User>) {}
 
     async signIn(signInDto: SignInDto): Promise<void> {
-        const SIGNIN_USER:User = await this.find_User(signInDto)
+        const SIGNIN_USER:User = await this.__find_User(signInDto)
         if(SIGNIN_USER == null) throw new EmailNotFoundException()
         if(signInDto.userPassword != SIGNIN_USER.password) throw new InvalidPasswordException()
     }
 
-    async find_User(signInDto: SignInDto): Promise<User | null> {
-        return await this.usersRepository.findOneBy({
+    private async __find_User(signInDto: SignInDto): Promise<User | null> {
+        return await this.__usersRepository.findOneBy({
             email: signInDto.userEmail
         })
     }
