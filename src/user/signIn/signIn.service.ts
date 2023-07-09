@@ -18,18 +18,18 @@ export class SignInService {
     }
 
 
+    private async __find_User(signInDto: SignInDto): Promise<User | null> {
+        return await this.__usersRepository.findOneBy({
+            email: signInDto.userEmail
+        })
+    }
+
+
     private __raiseIfEmailNotFound(signInUser: User): void {
         if(signInUser == null) throw new EmailNotFoundException()
     }
 
     private __raiseIfPasswordInvalid(signInDto: SignInDto, signInUser: User): void {
         if(signInDto.userPassword != signInUser.password) throw new InvalidPasswordException()
-    }
-
-
-    private async __find_User(signInDto: SignInDto): Promise<User | null> {
-        return await this.__usersRepository.findOneBy({
-            email: signInDto.userEmail
-        })
     }
 }
