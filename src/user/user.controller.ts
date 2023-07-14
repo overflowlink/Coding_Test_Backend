@@ -11,8 +11,10 @@ export class UserController {
 
   @Post("signIn")
   @HttpCode(200)
-  async signIn(@Body() signInDto: SignInDto): Promise<void> {
-    await this.__signInService.signIn(signInDto)
+  async signIn(@Body() signInDto: SignInDto): Promise<object> {
+    return {
+      token: await this.__signInService.signIn(signInDto)
+    }
   }
 
   @Post("signUp")
