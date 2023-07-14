@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { IsValidPassword } from '../validationDecorators/isValidPassword.decorator';
+import { IsValidPassword } from '../components/validationDecorators/isValidPassword.decorator';
 
 export class SignInDto {
     @IsEmail()
