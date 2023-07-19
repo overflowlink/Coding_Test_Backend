@@ -13,7 +13,7 @@ export class SignInService {
                 @Inject(TokenService) private __tokenService: TokenService) {}
 
     async signIn(signInDto: SignInDto): Promise<string> {
-        const SIGNIN_USER:User = await this.__find_User(signInDto)
+        const SIGNIN_USER:User = await this.__findUser(signInDto)
 
         this.__raiseIfEmailNotFound(SIGNIN_USER)
         this.__raiseIfPasswordInvalid(signInDto, SIGNIN_USER)
@@ -22,7 +22,7 @@ export class SignInService {
     }
 
 
-    private async __find_User(signInDto: SignInDto): Promise<User | null> {
+    private async __findUser(signInDto: SignInDto): Promise<User | null> {
         return await this.__usersRepository.findOneBy({
             email: signInDto.userEmail
         })
