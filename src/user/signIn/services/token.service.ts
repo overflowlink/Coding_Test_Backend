@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as jwt from "jsonwebtoken";
 
 @Injectable()
-export class AuthService {
+export class TokenService {
     token(email: string, name: string): string {
         return jwt.sign(this.__payload(email, name), this.__secret(), this.__config())
     }
