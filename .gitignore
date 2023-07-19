@@ -39,3 +39,6 @@ lerna-debug.log*
 
 # Private directory
 /privates
+
+# VS Code custom setting directory
+.vscode
