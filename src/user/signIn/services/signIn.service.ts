@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AuthService } from '../../components/services/auth.service';
 import { TokenService } from './token.service';
 import { SignInDto } from '../signIn.dto';
 import { User } from "../../components/entities/user.entity"
@@ -10,7 +11,8 @@ import { InvalidPasswordException } from '../exceptions/invalidPassword.exceptio
 @Injectable()
 export class SignInService {
     constructor(@InjectRepository(User) private __usersRepository: Repository<User>,
-                @Inject(TokenService) private __tokenService: TokenService) {}
+                @Inject(TokenService) private __tokenService: TokenService,
+                @Inject(AuthService) private __authService: AuthService) {}
 
     async signIn(signInDto: SignInDto): Promise<string> {
         const SIGNIN_USER:User = await this.__findUser(signInDto)
@@ -34,6 +36,6 @@ export class SignInService {
     }
 
     private __raiseIfPasswordInvalid(signInDto: SignInDto, signInUser: User): void {
-        if(signInDto.userPassword != signInUser.password) throw new InvalidPasswordException()
+        if(!this.__authService.isValidPasswordHash(signInDto, signInUser)) throw new InvalidPasswordException()
     }
 }

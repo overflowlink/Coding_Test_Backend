@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AuthService } from '../../components/services/auth.service';
 import { SignUpDto } from '../signUp.dto';
 import { User } from "../../components/entities/user.entity"
 import { EmailAlreadyExistException } from '../exceptions/emailAlreadyExist.exception';
@@ -8,7 +9,8 @@ import { NameAlreadyExistException } from '../exceptions/nameAlreadyExist.except
 
 @Injectable()
 export class SignUpService {
-    constructor(@InjectRepository(User) private __usersRepository: Repository<User>) {}
+    constructor(@InjectRepository(User) private __usersRepository: Repository<User>,
+                @Inject(AuthService) private __authService: AuthService) {}
 
     async signUp(signUpDto: SignUpDto): Promise<void> {
         await this.__raiseIfEmailExist(signUpDto)
@@ -47,7 +49,7 @@ export class SignUpService {
     private __user(signUpDto: SignUpDto): User {
         const USER = new User()
         USER.email = signUpDto.userEmail
-        USER.password = signUpDto.userPassword
+        USER.password = this.__authService.newPasswordHash(signUpDto)
         USER.name = signUpDto.userName
         return USER
     }

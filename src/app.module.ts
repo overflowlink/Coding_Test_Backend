@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GlobalModule } from './components/modules/global.module';
 import { UserModule } from './user/user.module';
 import { User } from "./user/components/entities/user.entity"
 
 @Module({
-  imports: [UserModule,
+  imports: [GlobalModule,
+            UserModule,
             ConfigModule.forRoot({envFilePath: ".development.env"}),
             TypeOrmModule.forRoot({
               type: 'mysql',
