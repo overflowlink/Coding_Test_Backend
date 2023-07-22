@@ -15,12 +15,12 @@ export class SignInService {
                 @Inject(AuthService) private __authService: AuthService) {}
 
     async signIn(signInDto: SignInDto): Promise<string> {
-        const SIGNIN_USER:User = await this.__findUser(signInDto)
+        const SEARCHED_USER:User = await this.__findUser(signInDto)
 
-        this.__raiseIfEmailNotFound(SIGNIN_USER)
-        this.__raiseIfPasswordInvalid(signInDto, SIGNIN_USER)
+        this.__raiseIfEmailNotFound(SEARCHED_USER)
+        this.__raiseIfPasswordInvalid(signInDto, SEARCHED_USER)
 
-        return this.__tokenService.token(SIGNIN_USER.email, SIGNIN_USER.name)
+        return this.__tokenService.token(SEARCHED_USER.email, SEARCHED_USER.name)
     }
 
 
@@ -31,11 +31,11 @@ export class SignInService {
     }
 
 
-    private __raiseIfEmailNotFound(signInUser: User): void {
-        if(signInUser == null) throw new EmailNotFoundException()
+    private __raiseIfEmailNotFound(searchedUser: User): void {
+        if(searchedUser == null) throw new EmailNotFoundException()
     }
 
-    private __raiseIfPasswordInvalid(signInDto: SignInDto, signInUser: User): void {
-        if(!this.__authService.isValidPasswordHash(signInDto, signInUser)) throw new InvalidPasswordException()
+    private __raiseIfPasswordInvalid(signInDto: SignInDto, searchedUser: User): void {
+        if(!this.__authService.isValidPasswordHash(signInDto, searchedUser)) throw new InvalidPasswordException()
     }
 }
