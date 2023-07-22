@@ -12,6 +12,7 @@ export class SignUpService {
     constructor(@InjectRepository(User) private __usersRepository: Repository<User>,
                 @Inject(AuthService) private __authService: AuthService) {}
 
+
     async signUp(signUpDto: SignUpDto): Promise<void> {
         await this.__raiseIfEmailExist(signUpDto)
         await this.__raiseIfNameExist(signUpDto)

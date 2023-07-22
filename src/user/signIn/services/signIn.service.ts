@@ -14,6 +14,7 @@ export class SignInService {
                 @Inject(TokenService) private __tokenService: TokenService,
                 @Inject(AuthService) private __authService: AuthService) {}
 
+
     async signIn(signInDto: SignInDto): Promise<string> {
         const SEARCHED_USER:User = await this.__findUser(signInDto)
 
