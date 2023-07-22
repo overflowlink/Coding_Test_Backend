@@ -20,7 +20,7 @@ export class SignInService {
         this.__raiseIfEmailNotFound(SEARCHED_USER)
         this.__raiseIfPasswordInvalid(signInDto, SEARCHED_USER)
 
-        return this.__tokenService.token(SEARCHED_USER.email, SEARCHED_USER.name)
+        return this.__tokenService.token(SEARCHED_USER)
     }
 
 
