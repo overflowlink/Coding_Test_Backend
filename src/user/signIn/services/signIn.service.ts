@@ -16,27 +16,20 @@ export class SignInService {
 
 
     async signIn(signInDto: SignInDto): Promise<string> {
-        const SEARCHED_USER:User = await this.__findUser(signInDto)
-
-        this.__raiseIfEmailNotFound(SEARCHED_USER)
-        this.__raiseIfPasswordInvalid(signInDto, SEARCHED_USER)
-
-        return this.__tokenService.token(SEARCHED_USER)
-    }
-
-
-    private async __findUser(signInDto: SignInDto): Promise<User | null> {
-        return await this.__usersRepository.findOneBy({
+        let searchedUserOrNull:User = null
+        //#region findUserOrNull(signInDto: SignInDto): User|null
+        searchedUserOrNull = await this.__usersRepository.findOneBy({
             email: signInDto.userEmail
         })
-    }
+        //#endregion
 
+        //#region raiseIfEmailNotFound(searchedUserOrNull: User): void
+        if(searchedUserOrNull == null) throw new EmailNotFoundException()
+        //#endregion
+        //#region raiseIfPasswordInvalid(signInDto: SignInDto, searchedUserOrNull: User): void
+        if(!this.__authService.isValidPasswordHash(signInDto, searchedUserOrNull)) throw new InvalidPasswordException()
+        //#endregion
 
-    private __raiseIfEmailNotFound(searchedUser: User): void {
-        if(searchedUser == null) throw new EmailNotFoundException()
-    }
-
-    private __raiseIfPasswordInvalid(signInDto: SignInDto, searchedUser: User): void {
-        if(!this.__authService.isValidPasswordHash(signInDto, searchedUser)) throw new InvalidPasswordException()
+        return this.__tokenService.token(searchedUserOrNull)
     }
 }

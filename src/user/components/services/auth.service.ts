@@ -13,14 +13,16 @@ export class AuthService {
     }
 
     isValidPasswordHash(signInDto: SignInDto, searchedUser: User): boolean {
-        return this.__createdPasswordHash(signInDto, searchedUser) == searchedUser.password
-    }
+        let createdPasswordHash:string = ""
+        //#region createdPasswordHash(signInDto: SignInDto, searchedUser: User): string
+        let searchedUserSalt:string = ""
+        //#region searchedUserSalt(searchedUser: User): string
+        searchedUserSalt = searchedUser.password.split("$")[2]
+        //#endregion
 
-    private __createdPasswordHash(signInDto: SignInDto, searchedUser: User): string {
-        return this.__hashService.sha512(signInDto.userPassword, this.__salt(searchedUser))
-    }
-
-    private __salt(searchedUser: User): string {
-        return searchedUser.password.split("$")[2]
+        createdPasswordHash = this.__hashService.sha512(signInDto.userPassword, searchedUserSalt)
+        //#endregion
+        
+        return createdPasswordHash == searchedUser.password
     }
 }

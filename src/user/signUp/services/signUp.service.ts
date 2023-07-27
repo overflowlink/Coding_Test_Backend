@@ -14,44 +14,37 @@ export class SignUpService {
 
 
     async signUp(signUpDto: SignUpDto): Promise<void> {
-        await this.__raiseIfEmailExist(signUpDto)
-        await this.__raiseIfNameExist(signUpDto)
-        
-        await this.__insertUser(signUpDto)
-    }
-
-
-    private async __raiseIfEmailExist(signUpDto: SignUpDto): Promise<void> {
-        if((await this.__findUserByEmail(signUpDto)) != null) throw new EmailAlreadyExistException()
-    }
-
-    private async __findUserByEmail(signUpDto: SignUpDto): Promise<User | null> {
-        return await this.__usersRepository.findOneBy({
+        //#region raiseIfEmailAlreadyExist(signUpDto: SignUpDto): void
+        let findedUserByEmailOrNull:User = null
+        //#region findUserByEmailOrNull(signUpDto: SignUpDto): User|null
+        findedUserByEmailOrNull = await this.__usersRepository.findOneBy({
             email: signUpDto.userEmail
         })
-    }
+        //#endregion
 
-
-    private async __raiseIfNameExist(signUpDto: SignUpDto): Promise<void> {
-        if((await this.__findUserByName(signUpDto)) != null) throw new NameAlreadyExistException()
-    }
-
-    private async __findUserByName(signUpDto: SignUpDto): Promise<User | null> {
-        return await this.__usersRepository.findOneBy({
+        if(findedUserByEmailOrNull != null) throw new EmailAlreadyExistException()
+        //#endregion
+        //#region raiseIfNameAlreadyExist(signUpDto: SignUpDto): void
+        let findedUserByNameOrNull:User = null
+        //#region findUserByNameOrNull(signUpDto: SignUpDto): User|null
+        findedUserByNameOrNull = await this.__usersRepository.findOneBy({
             name: signUpDto.userName
         })
-    }
+        //#endregion
 
-    
-    private async __insertUser(signUpDto: SignUpDto): Promise<void> {
-        await this.__usersRepository.manager.save(this.__user(signUpDto))
-    }
+        if(findedUserByNameOrNull != null) throw new NameAlreadyExistException()
+        //#endregion
 
-    private __user(signUpDto: SignUpDto): User {
-        const USER = new User()
-        USER.email = signUpDto.userEmail
-        USER.password = this.__authService.newPasswordHash(signUpDto)
-        USER.name = signUpDto.userName
-        return USER
+        //#region insertUser(signUpDto: SignUpDto): void
+        let userToInsert:User = null
+        //#region userToInsert(signUpDto: SignUpDto): User
+        userToInsert = new User()
+        userToInsert.email = signUpDto.userEmail
+        userToInsert.password = this.__authService.newPasswordHash(signUpDto)
+        userToInsert.name = signUpDto.userName
+        //#endregion
+
+        await this.__usersRepository.manager.save(userToInsert)
+        //#endregion
     }
 }

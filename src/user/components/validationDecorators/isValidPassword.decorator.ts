@@ -4,40 +4,44 @@ import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorCon
 @ValidatorConstraint()
 export class IsValidPasswordConstraint implements ValidatorConstraintInterface {
     validate(password: any, _: ValidationArguments): boolean {
-        return this.__isValidLength(password) &&
-               this.__isAllCharTypeContains(password) &&
-               this.__isNotContainInvalidSpecailChars(password)
-    }
+      let isValidLength:boolean = false
+      //#region isValidLength(password: string): boolean
+      isValidLength = ((password.length >= 8) && (password.length <= 32))
+      //#endregion
+      if(!isValidLength) return false 
 
-    __isValidLength(password: string): boolean {
-      return (password.length >= 8) && (password.length <= 32)
-    }
+      let isAllCharTypeContains:boolean = false
+      //#region isAllCharTypeContains(password: string): boolean
+      let isContainAlphaCharType:boolean = false
+      //#region isContainAlphaCharType(password: string): boolean
+      isContainAlphaCharType = (password.match(/[a-zA-Z]/) != null)
+      //#endregion
 
-    __isAllCharTypeContains(password: string): boolean {
-      return this.__isContainAlphaCharType(password) &&
-             this.__isContainDigitCharType(password) &&
-             this.__isContainSpecailCharType(password)
-    }
+      let isContainDigitCharType:boolean = false
+      //#region isContainDigitCharType(password: string): boolean
+      isContainDigitCharType = (password.match(/[0-9]/) != null)
+      //#endregion
 
-    __isContainAlphaCharType(password: string): boolean {
-      return (password.match(/[a-zA-Z]/) != null)
-    }
+      let isContainSpecailCharType:boolean = false
+      //#region isContainSpecailCharType(password: string): boolean
+      isContainSpecailCharType = (password.match(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/) != null)
+      //#endregion
 
-    __isContainDigitCharType(password: string): boolean {
-      return (password.match(/[0-9]/) != null)
-    }
+      isAllCharTypeContains = isContainAlphaCharType && isContainDigitCharType && isContainSpecailCharType
+      //#endregion
+      if(!isAllCharTypeContains) return false
 
-    __isContainSpecailCharType(password: string): boolean {
-      return (password.match(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/) != null)
-    }
+      let isNotContainInvalidSpecailChars:boolean = false
+      //#region isNotContainInvalidSpecailChars(password: string): boolean
+      isNotContainInvalidSpecailChars = (password.match(/[\<\>\(\)\#\'\/\|]/) == null)
+      //#endregion
+      if(!isNotContainInvalidSpecailChars) return false
 
-    __isNotContainInvalidSpecailChars(password: string): boolean {
-      return (password.match(/[\<\>\(\)\#\'\/\|]/) == null)
+      return true
     }
-
     
     defaultMessage(_: ValidationArguments): string {
-        return "Invalid password format"
+      return "Invalid password format"
     }
 }
   
