@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { HashService } from '../../../components/services/hash.service';
-import { SignUpDto } from '../../signUp/signUp.dto';
-import { SignInDto } from '../../signIn/signIn.dto';
+import { SignUpDto } from '../../signUp/dtos/signUp.dto';
+import { SignInDto } from '../../signIn/dtos/signIn.dto';
 import { User } from "../entities/user.entity"
 
 @Injectable()

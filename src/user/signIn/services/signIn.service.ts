@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../components/services/auth.service';
 import { TokenService } from './token.service';
-import { SignInDto } from '../signIn.dto';
+import { SignInDto } from '../dtos/signIn.dto';
 import { User } from "../../components/entities/user.entity"
 import { EmailNotFoundException } from '../exceptions/emailNotFound.exception';
 import { InvalidPasswordException } from '../exceptions/invalidPassword.exception';
