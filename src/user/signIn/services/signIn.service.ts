@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AuthService } from '../../components/services/auth.service';
+import { HashService } from '../../../components/services/hash.service';
 import { TokenService } from './token.service';
 import { SignInDto } from '../dtos/signIn.dto';
 import { User } from "../../components/entities/user.entity"
@@ -12,7 +12,7 @@ import { InvalidPasswordException } from '../exceptions/invalidPassword.exceptio
 export class SignInService {
     constructor(@InjectRepository(User) private __usersRepository: Repository<User>,
                 @Inject(TokenService) private __tokenService: TokenService,
-                @Inject(AuthService) private __authService: AuthService) {}
+                @Inject(HashService) private __hashService: HashService) {}
 
 
     async signIn(signInDto: SignInDto): Promise<string> {
@@ -25,7 +25,14 @@ export class SignInService {
         if(FOUND_USER_OR_NULL == null) throw new EmailNotFoundException()
 
         // Raise if password is invalid
-        if(!this.__authService.isValidPasswordHash(signInDto, FOUND_USER_OR_NULL)) throw new InvalidPasswordException()
+        let isValidPassword:boolean = false
+
+        let createdPasswordHash:string = ""
+        const SEARCHED_USER_SALT:string = FOUND_USER_OR_NULL.password.split("$")[2]
+        createdPasswordHash = this.__hashService.sha512(signInDto.userPassword, SEARCHED_USER_SALT)
+        isValidPassword = (createdPasswordHash == FOUND_USER_OR_NULL.password)
+
+        if(!isValidPassword) throw new InvalidPasswordException()
 
 
         return this.__tokenService.token(FOUND_USER_OR_NULL)
