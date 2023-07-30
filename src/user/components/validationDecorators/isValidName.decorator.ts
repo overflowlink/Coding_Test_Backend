@@ -4,17 +4,12 @@ import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorCon
 @ValidatorConstraint()
 export class IsValidNameConstraint implements ValidatorConstraintInterface {
     validate(name: any, _: ValidationArguments): boolean {
-        let isValidLength:boolean = false
-        //#region isValidLength(name: string): boolean
-        isValidLength = ((name.length >= 5) && (name.length <= 32))
-        //#endregion
-        if(!isValidLength) return false
+        const IS_VALID_LENGTH:boolean = ((name.length >= 5) && (name.length <= 32))
+        if(!IS_VALID_LENGTH) return false
 
-        let isNotContainInvalidSpecailChars:boolean = false
-        //#region isNotContainInvalidSpecailChars(name: string): boolean
-        isNotContainInvalidSpecailChars = (name.match(/[\<\>\(\)\#\'\/\|]/) == null)
-        //#endregion
-        if(!isNotContainInvalidSpecailChars) return false
+        const IS_NOT_CONTAIN_INVALID_SPECAIL_CHARS:boolean = (name.match(/[\<\>\(\)\#\'\/\|]/) == null)
+        if(!IS_NOT_CONTAIN_INVALID_SPECAIL_CHARS) return false
+
 
         return true
     }

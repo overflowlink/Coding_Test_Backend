@@ -14,14 +14,8 @@ export class AuthService {
 
     isValidPasswordHash(signInDto: SignInDto, searchedUser: User): boolean {
         let createdPasswordHash:string = ""
-        //#region createdPasswordHash(signInDto: SignInDto, searchedUser: User): string
-        let searchedUserSalt:string = ""
-        //#region searchedUserSalt(searchedUser: User): string
-        searchedUserSalt = searchedUser.password.split("$")[2]
-        //#endregion
-
-        createdPasswordHash = this.__hashService.sha512(signInDto.userPassword, searchedUserSalt)
-        //#endregion
+        const SEARCHED_USER_SALT:string = searchedUser.password.split("$")[2]
+        createdPasswordHash = this.__hashService.sha512(signInDto.userPassword, SEARCHED_USER_SALT)
         
         return createdPasswordHash == searchedUser.password
     }

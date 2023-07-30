@@ -16,20 +16,18 @@ export class SignInService {
 
 
     async signIn(signInDto: SignInDto): Promise<string> {
-        let searchedUserOrNull:User = null
-        //#region findUserOrNull(signInDto: SignInDto): User|null
-        searchedUserOrNull = await this.__usersRepository.findOneBy({
+        // Check If Dto is valid sign in data
+        const FOUND_USER_OR_NULL:User = await this.__usersRepository.findOneBy({
             email: signInDto.userEmail
         })
-        //#endregion
 
-        //#region raiseIfEmailNotFound(searchedUserOrNull: User): void
-        if(searchedUserOrNull == null) throw new EmailNotFoundException()
-        //#endregion
-        //#region raiseIfPasswordInvalid(signInDto: SignInDto, searchedUserOrNull: User): void
-        if(!this.__authService.isValidPasswordHash(signInDto, searchedUserOrNull)) throw new InvalidPasswordException()
-        //#endregion
+        // Raise if email is not found
+        if(FOUND_USER_OR_NULL == null) throw new EmailNotFoundException()
 
-        return this.__tokenService.token(searchedUserOrNull)
+        // Raise if password is invalid
+        if(!this.__authService.isValidPasswordHash(signInDto, FOUND_USER_OR_NULL)) throw new InvalidPasswordException()
+
+
+        return this.__tokenService.token(FOUND_USER_OR_NULL)
     }
 }
