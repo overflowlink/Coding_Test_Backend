@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as jwt from "jsonwebtoken";
-import { User } from "../../components/entities/user.entity"
+import { UserEntity } from "../../components/entities/user.entity"
 
 @Injectable()
 export class TokenService {
-    token(user: User): string {
+    token(user: UserEntity): string {
         const PAYLOAD:object = {
             email: user.email,
             name: user.name

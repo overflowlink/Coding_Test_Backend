@@ -4,20 +4,20 @@ import { Repository } from 'typeorm';
 import { HashService } from '../../../components/services/hash.service';
 import { TokenService } from './token.service';
 import { SignInDto } from '../dtos/signIn.dto';
-import { User } from "../../components/entities/user.entity"
+import { UserEntity } from "../../components/entities/user.entity"
 import { EmailNotFoundException } from '../exceptions/emailNotFound.exception';
 import { InvalidPasswordException } from '../exceptions/invalidPassword.exception';
 
 @Injectable()
 export class SignInService {
-    constructor(@InjectRepository(User) private __usersRepository: Repository<User>,
+    constructor(@InjectRepository(UserEntity) private __usersRepository: Repository<UserEntity>,
                 @Inject(TokenService) private __tokenService: TokenService,
                 @Inject(HashService) private __hashService: HashService) {}
 
 
     async signIn(signInDto: SignInDto): Promise<string> {
         // Check If Dto is valid sign in data
-        const FOUND_USER_OR_NULL:User = await this.__usersRepository.findOneBy({
+        const FOUND_USER_OR_NULL:UserEntity = await this.__usersRepository.findOneBy({
             email: signInDto.userEmail
         })
 
