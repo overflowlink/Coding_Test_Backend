@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HashService } from '../../../components/services/hash.service';
 import { SignUpDto } from '../dtos/signUp.dto';
-import { UserEntity } from "../../components/entities/user.entity"
+import { UserEntity } from "../../components/entities/user.entity";
 import { EmailAlreadyExistException } from '../exceptions/emailAlreadyExist.exception';
 import { NameAlreadyExistException } from '../exceptions/nameAlreadyExist.exception';
 

@@ -4,9 +4,9 @@ import { IsValidPassword } from '../../components/validationDecorators/isValidPa
 export class SignInDto {
     @IsEmail()
     @IsNotEmpty()
-    userEmail: string;
+    userEmail: string
 
     @IsValidPassword()
     @IsNotEmpty()
-    userPassword: string;
+    userPassword: string
 }

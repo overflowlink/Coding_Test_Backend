@@ -27,6 +27,6 @@ export function IsValidName(validationOptions?: ValidationOptions) {
         options: validationOptions,
         constraints: [],
         validator: IsValidNameConstraint,
-      });
-    };
+      })
+    }
 }

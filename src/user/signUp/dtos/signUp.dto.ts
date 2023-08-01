@@ -5,13 +5,13 @@ import { IsValidName } from '../../components/validationDecorators/isValidName.d
 export class SignUpDto {
     @IsEmail()
     @IsNotEmpty()
-    userEmail: string;
+    userEmail: string
     
     @IsValidPassword()
     @IsNotEmpty()
-    userPassword: string;
+    userPassword: string
 
     @IsValidName()
     @IsNotEmpty()
-    userName: string;
+    userName: string
 }

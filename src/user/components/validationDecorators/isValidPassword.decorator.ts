@@ -34,6 +34,6 @@ export function IsValidPassword(validationOptions?: ValidationOptions) {
         options: validationOptions,
         constraints: [],
         validator: IsValidPasswordConstraint,
-      });
-    };
+      })
+    }
 }

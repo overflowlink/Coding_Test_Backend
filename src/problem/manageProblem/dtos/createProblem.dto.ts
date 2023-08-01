@@ -2,25 +2,25 @@ import { IsNotEmpty, IsDefined } from 'class-validator';
 
 export class CreateProblemDto {
     @IsNotEmpty()
-    title: string;
+    title: string
 
 
     @IsNotEmpty()
-    timeLimitSecond: number;
+    timeLimitSecond: number
 
     @IsNotEmpty()
-    memoryLimitMb: number;
+    memoryLimitMb: number
 
 
     @IsNotEmpty()
-    problemExplain: string;
+    problemExplain: string
 
     @IsNotEmpty()
-    inputExplain: string;
+    inputExplain: string
 
     @IsNotEmpty()
-    outputExplain: string;
+    outputExplain: string
 
     @IsDefined()
-    note: string;
+    note: string
 }
