@@ -1,6 +1,7 @@
 import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import { ManageProblemService } from './manageProblem/services/manageProblem.service';
 import { CreateProblemDto } from './manageProblem/dtos/createProblem.dto';
+import { CreateProblemExampleDto } from './manageProblem/dtos/createProblemExample.dto';
 
 @Controller('problem')
 export class ProblemController {
@@ -12,5 +13,11 @@ export class ProblemController {
     return {
       id: await this.__manageProblemService.create(createProblemDto)
     }
+  }
+
+  @Post("example")
+  @HttpCode(200)
+  async createExample(@Body() createProblemExampleDto: CreateProblemExampleDto): Promise<void> {
+    await this.__manageProblemService.createExample(createProblemExampleDto)
   }
 }
