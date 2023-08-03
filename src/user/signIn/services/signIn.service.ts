@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { HashService } from '../../../components/services/hash.service';
 import { TokenService } from './token.service';
 import { SignInDto } from '../dtos/signIn.dto';
+import { SignInResponse } from '../responses/signIn.response';
 import { UserEntity } from "../../components/entities/user.entity";
 import { EmailNotFoundException } from '../exceptions/emailNotFound.exception';
 import { InvalidPasswordException } from '../exceptions/invalidPassword.exception';
@@ -15,7 +16,7 @@ export class SignInService {
                 @Inject(HashService) private __hashService: HashService) {}
 
 
-    async signIn(signInDto: SignInDto): Promise<string> {
+    async signIn(signInDto: SignInDto): Promise<SignInResponse> {
         // Check If Dto is valid sign in data
         const FOUND_USER_OR_NULL:UserEntity = await this.__usersRepository.findOneBy({
             email: signInDto.userEmail
@@ -35,6 +36,8 @@ export class SignInService {
         if(!isValidPassword) throw new InvalidPasswordException()
 
 
-        return this.__tokenService.token(FOUND_USER_OR_NULL)
+        return {
+            token: this.__tokenService.token(FOUND_USER_OR_NULL)
+        }
     }
 }
