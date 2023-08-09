@@ -64,7 +64,7 @@ export class ManageProblemService {
         
         const FIND_ALL_PROBLEM_RESPONSE = new FindAllProblemResponse()
 
-        const FOUND_PROBLEM_EITITIES:ProblemEntity[] = await this.__problemsRepository.find({
+        const FOUND_PROBLEM_ENTITIES:ProblemEntity[] = await this.__problemsRepository.find({
             select: {
                 id: true,
                 title: true
@@ -75,7 +75,7 @@ export class ManageProblemService {
             skip: ROW_PER_PAGE*(findAllProblemDto.page-1),
             take: ROW_PER_PAGE
         })
-        FIND_ALL_PROBLEM_RESPONSE.briefProblemInfos = FOUND_PROBLEM_EITITIES.map((entity) => {
+        FIND_ALL_PROBLEM_RESPONSE.briefProblemInfos = FOUND_PROBLEM_ENTITIES.map((entity) => {
             return {id: entity.id, title: entity.title}
         })
         return FIND_ALL_PROBLEM_RESPONSE
