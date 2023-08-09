@@ -1,7 +1,9 @@
-import { Controller, Get, Query, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Get, Query, Param, Post, Body, HttpCode } from '@nestjs/common';
 import { ManageProblemService } from './manageProblem/services/manageProblem.service';
 import { CreateProblemDto } from './manageProblem/dtos/createProblem.dto';
 import { CreateProblemResponse } from './manageProblem/responses/createProblem.response';
+import { FindProblemDto } from './manageProblem/dtos/findProblem.dto';
+import { FindProblemResponse } from './manageProblem/responses/findProblem.response';
 import { FindAllProblemDto } from './manageProblem/dtos/findAllProblem.dto';
 import { FindAllProblemResponse } from './manageProblem/responses/findAllProblem.response';
 import { CreateProblemExampleDto } from './manageProblem/dtos/createProblemExample.dto';
@@ -14,6 +16,12 @@ export class ProblemController {
   @HttpCode(200)
   async create(@Body() createProblemDto: CreateProblemDto): Promise<CreateProblemResponse> {
     return (await this.__manageProblemService.create(createProblemDto))
+  }
+
+  @Get(':id')
+  @HttpCode(200)
+  async find(@Param() findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
+    return (await this.__manageProblemService.find(findProblemDto))
   }
 
   @Get()

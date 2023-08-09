@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProblemDto } from '../dtos/createProblem.dto';
 import { CreateProblemResponse } from '../responses/createProblem.response';
+import { FindProblemDto } from '../dtos/findProblem.dto';
+import { FindProblemResponse } from '../responses/findProblem.response';
 import { FindAllProblemDto } from '../dtos/findAllProblem.dto';
 import { FindAllProblemResponse, BriefProblemInfo } from '../responses/findAllProblem.response';
 import { ProblemEntity } from '../../components/entities/problem.entity';
@@ -33,6 +35,26 @@ export class ManageProblemService {
 
         return {
             id: INSERTED_PROBLEM_ID
+        }
+    }
+
+    async find(findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
+        const FOUND_PROBLEM_ENTITY:ProblemEntity = await this.__problemsRepository.findOne({
+            where: {id: findProblemDto.id}
+        })
+        if(FOUND_PROBLEM_ENTITY == null) throw new ProblemNotFoundException()
+        
+        return {
+            id: FOUND_PROBLEM_ENTITY.id,
+            title: FOUND_PROBLEM_ENTITY.title,
+
+            timeLimitSecond: FOUND_PROBLEM_ENTITY.timeLimitSecond,
+            memoryLimitMb: FOUND_PROBLEM_ENTITY.memoryLimitMb,
+
+            problemExplain: FOUND_PROBLEM_ENTITY.problemExplain.toString(),
+            inputExplain: FOUND_PROBLEM_ENTITY.inputExplain.toString(),
+            outputExplain: FOUND_PROBLEM_ENTITY.outputExplain.toString(),
+            note: FOUND_PROBLEM_ENTITY.note.toString()
         }
     }
 
