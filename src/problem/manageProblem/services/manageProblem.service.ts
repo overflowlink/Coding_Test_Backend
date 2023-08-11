@@ -6,7 +6,7 @@ import { CreateProblemResponse } from '../responses/createProblem.response';
 import { FindProblemDto } from '../dtos/findProblem.dto';
 import { FindProblemResponse } from '../responses/findProblem.response';
 import { FindAllProblemDto } from '../dtos/findAllProblem.dto';
-import { FindAllProblemResponse, BriefProblemInfo } from '../responses/findAllProblem.response';
+import { FindAllProblemResponse } from '../responses/findAllProblem.response';
 import { ProblemEntity } from '../../components/entities/problem.entity';
 import { CreateProblemExampleDto } from '../dtos/createProblemExample.dto';
 import { ExampleEntity } from '../../components/entities/example.entity';
