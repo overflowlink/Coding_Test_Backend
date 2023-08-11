@@ -7,6 +7,7 @@ import { UserEntity } from "./user/components/entities/user.entity";
 import { ProblemModule } from './problem/problem.module';
 import { ProblemEntity } from './problem/components/entities/problem.entity';
 import { ExampleEntity } from './problem/components/entities/example.entity';
+import { TestcaseEntity } from './problem/components/entities/testcase.entity';
 
 @Module({
   imports: [GlobalModule,
@@ -25,7 +26,8 @@ import { ExampleEntity } from './problem/components/entities/example.entity';
               entities: [
                 UserEntity,
                 ProblemEntity, 
-                ExampleEntity
+                ExampleEntity,
+                TestcaseEntity
               ],
               synchronize: true,
             })]

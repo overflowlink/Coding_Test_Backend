@@ -11,11 +11,14 @@ import { ProblemEntity } from '../../components/entities/problem.entity';
 import { CreateProblemExampleDto } from '../dtos/createProblemExample.dto';
 import { ExampleEntity } from '../../components/entities/example.entity';
 import { ProblemNotFoundException } from '../exceptions/problemNotFound.exception';
+import { TestcaseEntity } from '../../components/entities/testcase.entity';
+import { CreateProblemTestcaseDto } from '../dtos/createProblemTestcase.dto';
 
 @Injectable()
 export class ManageProblemService {
     constructor(@InjectRepository(ProblemEntity) private __problemsRepository: Repository<ProblemEntity>,
-                @InjectRepository(ExampleEntity) private __examplesRepository: Repository<ExampleEntity>) {}
+                @InjectRepository(ExampleEntity) private __examplesRepository: Repository<ExampleEntity>,
+                @InjectRepository(TestcaseEntity) private __testcasesRepository: Repository<TestcaseEntity>) {}
 
     async create(createProblemDto: CreateProblemDto): Promise<CreateProblemResponse> {
         // Insert new problem data
@@ -95,5 +98,21 @@ export class ManageProblemService {
         EXAMPLE_TO_INSERT.problem = RELATED_PROBLEM
 
         await this.__examplesRepository.manager.save(EXAMPLE_TO_INSERT)
+    }
+
+    
+    async createTestcase(createProblemTestcaseDto: CreateProblemTestcaseDto): Promise<void> {
+        // Inset new testcase data
+        const RELATED_PROBLEM:ProblemEntity = await this.__problemsRepository.findOneBy({
+            id: createProblemTestcaseDto.problemId
+        })
+        if(RELATED_PROBLEM == null) throw new ProblemNotFoundException()
+
+        const TESTCASE_TO_INSERT:TestcaseEntity = new TestcaseEntity()
+        TESTCASE_TO_INSERT.inputValue = Buffer.from(createProblemTestcaseDto.inputValue, "utf-8")
+        TESTCASE_TO_INSERT.outputValue = Buffer.from(createProblemTestcaseDto.outputValue, "utf-8")
+        TESTCASE_TO_INSERT.problem = RELATED_PROBLEM
+
+        await this.__testcasesRepository.manager.save(TESTCASE_TO_INSERT)
     }
 }
