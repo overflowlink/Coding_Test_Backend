@@ -10,9 +10,11 @@ import { FindAllProblemResponse } from '../responses/findAllProblem.response';
 import { ProblemEntity } from '../../components/entities/problem.entity';
 import { CreateProblemExampleDto } from '../dtos/createProblemExample.dto';
 import { ExampleEntity } from '../../components/entities/example.entity';
+import { FindProblemExampleDto } from '../dtos/findProblemExample.dto';
 import { ProblemNotFoundException } from '../exceptions/problemNotFound.exception';
 import { TestcaseEntity } from '../../components/entities/testcase.entity';
 import { CreateProblemTestcaseDto } from '../dtos/createProblemTestcase.dto';
+import { FindProblemExampleResponse } from '../responses/findProblemExample.response';
 
 @Injectable()
 export class ManageProblemService {
@@ -98,6 +100,36 @@ export class ManageProblemService {
         EXAMPLE_TO_INSERT.problem = RELATED_PROBLEM
 
         await this.__examplesRepository.manager.save(EXAMPLE_TO_INSERT)
+    }
+
+    async findExample(findProblemExampleDto: FindProblemExampleDto): Promise<FindProblemExampleResponse> {
+        const FIND_PROBLEM_EXAMPLE_RESPONSE:FindProblemExampleResponse = new FindProblemExampleResponse()
+
+        const RELATED_PROBLEM:ProblemEntity = await this.__problemsRepository.findOneBy({
+            id: findProblemExampleDto.problemId
+        })
+        if(RELATED_PROBLEM == null) throw new ProblemNotFoundException()
+
+        const FOUND_EXAMPLE_ENTITIES:ExampleEntity[] = await this.__examplesRepository.find({
+            select: {
+                id: true,
+                inputValue: true,
+                outputValue: true
+            },
+            where: {
+                problem: RELATED_PROBLEM
+            },
+            order: {
+                id: "ASC"
+            }
+        })
+        FIND_PROBLEM_EXAMPLE_RESPONSE.problemExampleInfos = FOUND_EXAMPLE_ENTITIES.map((entity) => {
+            return {
+                id: entity.id,
+                inputValue: entity.inputValue.toString(),
+                outputValue: entity.outputValue.toString()}
+        })
+        return FIND_PROBLEM_EXAMPLE_RESPONSE
     }
 
     

@@ -7,6 +7,8 @@ import { FindProblemResponse } from './manageProblem/responses/findProblem.respo
 import { FindAllProblemDto } from './manageProblem/dtos/findAllProblem.dto';
 import { FindAllProblemResponse } from './manageProblem/responses/findAllProblem.response';
 import { CreateProblemExampleDto } from './manageProblem/dtos/createProblemExample.dto';
+import { FindProblemExampleDto } from './manageProblem/dtos/findProblemExample.dto';
+import { FindProblemExampleResponse } from './manageProblem/responses/findProblemExample.response';
 import { CreateProblemTestcaseDto } from './manageProblem/dtos/createProblemTestcase.dto';
 
 @Controller('problem')
@@ -36,6 +38,12 @@ export class ProblemController {
   @HttpCode(200)
   async createExample(@Body() createProblemExampleDto: CreateProblemExampleDto): Promise<void> {
     await this.__manageProblemService.createExample(createProblemExampleDto)
+  }
+
+  @Get("example/:problemId")
+  @HttpCode(200)
+  async findExample(@Param() findProblemExampleDto: FindProblemExampleDto): Promise<FindProblemExampleResponse> {
+    return (await this.__manageProblemService.findExample(findProblemExampleDto))
   }
 
 
