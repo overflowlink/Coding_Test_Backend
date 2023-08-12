@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { GlobalModule } from './components/modules/global.module';
+
 import { UserModule } from './user/user.module';
 import { UserEntity } from "./user/components/entities/user.entity";
+
 import { ProblemModule } from './problem/problem.module';
 import { ProblemEntity } from './problem/components/entities/problem.entity';
 import { ExampleEntity } from './problem/components/entities/example.entity';
 import { TestcaseEntity } from './problem/components/entities/testcase.entity';
+
 
 @Module({
   imports: [GlobalModule,
