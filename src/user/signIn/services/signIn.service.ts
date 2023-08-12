@@ -15,14 +15,14 @@ import { InvalidPasswordException } from '../exceptions/invalidPassword.exceptio
 
 @Injectable()
 export class SignInService {
-    constructor(@InjectRepository(UserEntity) private __usersRepository: Repository<UserEntity>,
+    constructor(@InjectRepository(UserEntity) private __userRepository: Repository<UserEntity>,
                 @Inject(TokenService) private __tokenService: TokenService,
                 @Inject(HashService) private __hashService: HashService) {}
 
 
     async signIn(signInDto: SignInDto): Promise<SignInResponse> {
         // Check If Dto is valid sign in data
-        const FOUND_USER_OR_NULL:UserEntity = await this.__usersRepository.findOneBy({
+        const FOUND_USER_OR_NULL:UserEntity = await this.__userRepository.findOneBy({
             email: signInDto.userEmail
         })
 

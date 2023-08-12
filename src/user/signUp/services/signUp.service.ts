@@ -13,19 +13,19 @@ import { NameAlreadyExistException } from '../exceptions/nameAlreadyExist.except
 
 @Injectable()
 export class SignUpService {
-    constructor(@InjectRepository(UserEntity) private __usersRepository: Repository<UserEntity>,
+    constructor(@InjectRepository(UserEntity) private __userRepository: Repository<UserEntity>,
                 @Inject(HashService) private __hashService: HashService) {}
 
 
     async signUp(signUpDto: SignUpDto): Promise<void> {
         // Raise if email already exist
-        const FOUND_USER_BY_EMAIL_OR_NULL:UserEntity = await this.__usersRepository.findOneBy({
+        const FOUND_USER_BY_EMAIL_OR_NULL:UserEntity = await this.__userRepository.findOneBy({
             email: signUpDto.userEmail
         })
         if(FOUND_USER_BY_EMAIL_OR_NULL != null) throw new EmailAlreadyExistException()
 
         // Raise if name already exist
-        const FOUND_USER_BY_NAME_OR_NULL:UserEntity = await this.__usersRepository.findOneBy({
+        const FOUND_USER_BY_NAME_OR_NULL:UserEntity = await this.__userRepository.findOneBy({
             name: signUpDto.userName
         })
         if(FOUND_USER_BY_NAME_OR_NULL != null) throw new NameAlreadyExistException()
@@ -37,6 +37,6 @@ export class SignUpService {
         USER_TO_INSERT.password = this.__hashService.sha512(signUpDto.userPassword, this.__hashService.salt(signUpDto.userPassword))
         USER_TO_INSERT.name = signUpDto.userName
 
-        await this.__usersRepository.manager.save(USER_TO_INSERT)
+        await this.__userRepository.manager.save(USER_TO_INSERT)
     }
 }

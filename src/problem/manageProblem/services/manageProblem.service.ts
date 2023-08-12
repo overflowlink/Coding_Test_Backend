@@ -23,9 +23,9 @@ import { ProblemNotFoundException } from '../exceptions/problemNotFound.exceptio
 
 @Injectable()
 export class ManageProblemService {
-    constructor(@InjectRepository(ProblemEntity) private __problemsRepository: Repository<ProblemEntity>,
-                @InjectRepository(ExampleEntity) private __examplesRepository: Repository<ExampleEntity>,
-                @InjectRepository(TestcaseEntity) private __testcasesRepository: Repository<TestcaseEntity>) {}
+    constructor(@InjectRepository(ProblemEntity) private __problemRepository: Repository<ProblemEntity>,
+                @InjectRepository(ExampleEntity) private __exampleRepository: Repository<ExampleEntity>,
+                @InjectRepository(TestcaseEntity) private __testcaseRepository: Repository<TestcaseEntity>) {}
 
     async create(createProblemDto: CreateProblemDto): Promise<CreateProblemResponse> {
         // Insert new problem data
@@ -40,7 +40,7 @@ export class ManageProblemService {
         PROBLEM_TO_INSERT.outputExplain = Buffer.from(createProblemDto.outputExplain, "utf-8")
         PROBLEM_TO_INSERT.note = Buffer.from(createProblemDto.note, "utf-8")
 
-        const INSERTED_PROBLEM_ID:number = (await this.__problemsRepository.manager.save(PROBLEM_TO_INSERT)).id
+        const INSERTED_PROBLEM_ID:number = (await this.__problemRepository.manager.save(PROBLEM_TO_INSERT)).id
 
 
         return {
@@ -49,7 +49,7 @@ export class ManageProblemService {
     }
 
     async find(findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
-        const FOUND_PROBLEM_ENTITY:ProblemEntity = await this.__problemsRepository.findOne({
+        const FOUND_PROBLEM_ENTITY:ProblemEntity = await this.__problemRepository.findOne({
             where: {id: findProblemDto.id}
         })
         if(FOUND_PROBLEM_ENTITY == null) throw new ProblemNotFoundException()
@@ -74,7 +74,7 @@ export class ManageProblemService {
         
         const FIND_ALL_PROBLEM_RESPONSE = new FindAllProblemResponse()
 
-        const FOUND_PROBLEM_ENTITIES:ProblemEntity[] = await this.__problemsRepository.find({
+        const FOUND_PROBLEM_ENTITIES:ProblemEntity[] = await this.__problemRepository.find({
             select: {
                 id: true,
                 title: true
@@ -94,7 +94,7 @@ export class ManageProblemService {
     
     async createExample(createProblemExampleDto: CreateProblemExampleDto): Promise<void> {    
         // Insert new example data
-        const RELATED_PROBLEM:ProblemEntity = await this.__problemsRepository.findOneBy({
+        const RELATED_PROBLEM:ProblemEntity = await this.__problemRepository.findOneBy({
             id: createProblemExampleDto.problemId
         })
         if(RELATED_PROBLEM == null) throw new ProblemNotFoundException()
@@ -104,18 +104,18 @@ export class ManageProblemService {
         EXAMPLE_TO_INSERT.outputValue = Buffer.from(createProblemExampleDto.outputValue, "utf-8")
         EXAMPLE_TO_INSERT.problem = RELATED_PROBLEM
 
-        await this.__examplesRepository.manager.save(EXAMPLE_TO_INSERT)
+        await this.__exampleRepository.manager.save(EXAMPLE_TO_INSERT)
     }
 
     async findExample(findProblemExampleDto: FindProblemExampleDto): Promise<FindProblemExampleResponse> {
         const FIND_PROBLEM_EXAMPLE_RESPONSE:FindProblemExampleResponse = new FindProblemExampleResponse()
 
-        const RELATED_PROBLEM:ProblemEntity = await this.__problemsRepository.findOneBy({
+        const RELATED_PROBLEM:ProblemEntity = await this.__problemRepository.findOneBy({
             id: findProblemExampleDto.problemId
         })
         if(RELATED_PROBLEM == null) throw new ProblemNotFoundException()
 
-        const FOUND_EXAMPLE_ENTITIES:ExampleEntity[] = await this.__examplesRepository.find({
+        const FOUND_EXAMPLE_ENTITIES:ExampleEntity[] = await this.__exampleRepository.find({
             select: {
                 id: true,
                 inputValue: true,
@@ -140,7 +140,7 @@ export class ManageProblemService {
     
     async createTestcase(createProblemTestcaseDto: CreateProblemTestcaseDto): Promise<void> {
         // Inset new testcase data
-        const RELATED_PROBLEM:ProblemEntity = await this.__problemsRepository.findOneBy({
+        const RELATED_PROBLEM:ProblemEntity = await this.__problemRepository.findOneBy({
             id: createProblemTestcaseDto.problemId
         })
         if(RELATED_PROBLEM == null) throw new ProblemNotFoundException()
@@ -150,6 +150,6 @@ export class ManageProblemService {
         TESTCASE_TO_INSERT.outputValue = Buffer.from(createProblemTestcaseDto.outputValue, "utf-8")
         TESTCASE_TO_INSERT.problem = RELATED_PROBLEM
 
-        await this.__testcasesRepository.manager.save(TESTCASE_TO_INSERT)
+        await this.__testcaseRepository.manager.save(TESTCASE_TO_INSERT)
     }
 }
