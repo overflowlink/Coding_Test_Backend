@@ -17,6 +17,8 @@ import { FindProblemExampleResponse } from '../responses/findProblemExample.resp
 
 import { TestcaseEntity } from '../../components/entities/testcase.entity';
 import { CreateProblemTestcaseDto } from '../dtos/createProblemTestcase.dto';
+import { FindProblemTestcaseDto } from '../dtos/findProblemTestcase.dto';
+import { FindProblemTestcaseResponse } from '../responses/findProblemTestcase.response';
 
 import { ProblemNotFoundException } from '../exceptions/problemNotFound.exception';
 
@@ -151,5 +153,35 @@ export class ManageProblemService {
         TESTCASE_TO_INSERT.problem = RELATED_PROBLEM
 
         await this.__testcaseRepository.manager.save(TESTCASE_TO_INSERT)
+    }
+
+    async findTestcase(findProblemTestcaseDto: FindProblemTestcaseDto): Promise<FindProblemTestcaseResponse> {
+        const FIND_PROBLEM_TESTCASE_RESPONSE:FindProblemTestcaseResponse = new FindProblemTestcaseResponse()
+
+        const RELATED_PROBLEM:ProblemEntity = await this.__problemRepository.findOneBy({
+            id: findProblemTestcaseDto.problemId
+        })
+        if(RELATED_PROBLEM == null) throw new ProblemNotFoundException()
+
+        const FOUND_TESTCASE_ENTITIES:TestcaseEntity[] = await this.__testcaseRepository.find({
+            select: {
+                id: true,
+                inputValue: true,
+                outputValue: true
+            },
+            where: {
+                problem: RELATED_PROBLEM
+            },
+            order: {
+                id: "ASC"
+            }
+        })
+        FIND_PROBLEM_TESTCASE_RESPONSE.problemTestcaseInfos = FOUND_TESTCASE_ENTITIES.map((entity) => {
+            return {
+                id: entity.id,
+                inputValue: entity.inputValue.toString(),
+                outputValue: entity.outputValue.toString()}
+        })
+        return FIND_PROBLEM_TESTCASE_RESPONSE
     }
 }
