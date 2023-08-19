@@ -11,6 +11,7 @@ import { ProblemModule } from './problem/problem.module';
 import { ProblemEntity } from './problem/components/entities/problem.entity';
 import { ExampleEntity } from './problem/components/entities/example.entity';
 import { TestcaseEntity } from './problem/components/entities/testcase.entity';
+import { SubmissionEntity } from './problem/components/entities/submission.entity';
 
 
 @Module({
@@ -31,7 +32,8 @@ import { TestcaseEntity } from './problem/components/entities/testcase.entity';
                 UserEntity,
                 ProblemEntity, 
                 ExampleEntity,
-                TestcaseEntity
+                TestcaseEntity,
+                SubmissionEntity
               ],
               synchronize: true,
             })]

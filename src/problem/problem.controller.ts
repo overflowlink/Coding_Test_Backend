@@ -1,5 +1,6 @@
 import { Controller, Get, Query, Param, Post, Body, HttpCode } from '@nestjs/common';
 
+
 import { ManageProblemService } from './manageProblem/services/manageProblem.service';
 
 import { CreateProblemDto } from './manageProblem/dtos/createProblem.dto';
@@ -18,9 +19,16 @@ import { FindProblemTestcaseDto } from './manageProblem/dtos/findProblemTestcase
 import { FindProblemTestcaseResponse } from './manageProblem/responses/findProblemTestcase.response';
 
 
+import { ManageSubmissionService } from './manageSubmission/services/manageSubmission.service';
+
+import { CreateSubmissionDto } from './manageSubmission/dtos/createSubmission.dto';
+
+
+
 @Controller('problem')
 export class ProblemController {
-  constructor(private __manageProblemService: ManageProblemService) {}
+  constructor(private __manageProblemService: ManageProblemService,
+              private __manageSubmissionService: ManageSubmissionService) {}
 
   @Post()
   @HttpCode(200)
@@ -64,5 +72,13 @@ export class ProblemController {
   @HttpCode(200)
   async findTestcase(@Param() findProblemTestcaseDto: FindProblemTestcaseDto): Promise<FindProblemTestcaseResponse> {
     return (await this.__manageProblemService.findTestcase(findProblemTestcaseDto))
+  }
+
+
+
+  @Post("submission")
+  @HttpCode(200)
+  async createSubmission(@Body() createSubmissionDto: CreateSubmissionDto): Promise<void> {
+    await this.__manageSubmissionService.create(createSubmissionDto)
   }
 }

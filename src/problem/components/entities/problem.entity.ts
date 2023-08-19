@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { ExampleEntity } from './example.entity';
 import { TestcaseEntity } from './testcase.entity';
+import { SubmissionEntity } from './submission.entity';
 
 @Entity({name: "problem"})
 export class ProblemEntity {
@@ -36,4 +37,7 @@ export class ProblemEntity {
 
     @OneToMany(type => TestcaseEntity, testcase => testcase.problem)
     testcases: TestcaseEntity[]
+
+    @OneToMany(type => SubmissionEntity, submission => submission.problem)
+    submissions: SubmissionEntity[]
 }
