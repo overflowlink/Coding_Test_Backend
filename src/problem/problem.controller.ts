@@ -22,6 +22,8 @@ import { FindProblemTestcaseResponse } from './manageProblem/responses/findProbl
 import { ManageSubmissionService } from './manageSubmission/services/manageSubmission.service';
 
 import { CreateSubmissionDto } from './manageSubmission/dtos/createSubmission.dto';
+import { FindSubmissionDto } from './manageSubmission/dtos/findSubmission.dto';
+import { FindSubmissionResponse } from './manageSubmission/responses/findSubmission.response';
 
 
 
@@ -30,24 +32,18 @@ export class ProblemController {
   constructor(private __manageProblemService: ManageProblemService,
               private __manageSubmissionService: ManageSubmissionService) {}
 
-  @Post()
+  @Post("submission")
   @HttpCode(200)
-  async create(@Body() createProblemDto: CreateProblemDto): Promise<CreateProblemResponse> {
-    return (await this.__manageProblemService.create(createProblemDto))
+  async createSubmission(@Body() createSubmissionDto: CreateSubmissionDto): Promise<void> {
+    await this.__manageSubmissionService.create(createSubmissionDto)
   }
 
-  @Get(':id')
+  @Get("submission")
   @HttpCode(200)
-  async find(@Param() findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
-    return (await this.__manageProblemService.find(findProblemDto))
+  async findSubmission(@Query() findSubmissionDto: FindSubmissionDto): Promise<FindSubmissionResponse> {
+    return (await this.__manageSubmissionService.find(findSubmissionDto))
   }
-
-  @Get()
-  @HttpCode(200)
-  async findAll(@Query() findAllProblemDto: FindAllProblemDto): Promise<FindAllProblemResponse> {
-    return (await this.__manageProblemService.findAll(findAllProblemDto))
-  }
-
+  
 
   @Post("example")
   @HttpCode(200)
@@ -75,10 +71,21 @@ export class ProblemController {
   }
 
 
-
-  @Post("submission")
+  @Post()
   @HttpCode(200)
-  async createSubmission(@Body() createSubmissionDto: CreateSubmissionDto): Promise<void> {
-    await this.__manageSubmissionService.create(createSubmissionDto)
+  async create(@Body() createProblemDto: CreateProblemDto): Promise<CreateProblemResponse> {
+    return (await this.__manageProblemService.create(createProblemDto))
+  }
+
+  @Get(':id')
+  @HttpCode(200)
+  async find(@Param() findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
+    return (await this.__manageProblemService.find(findProblemDto))
+  }
+
+  @Get()
+  @HttpCode(200)
+  async findAll(@Query() findAllProblemDto: FindAllProblemDto): Promise<FindAllProblemResponse> {
+    return (await this.__manageProblemService.findAll(findAllProblemDto))
   }
 }
