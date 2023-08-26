@@ -5,10 +5,10 @@ import { ManageProblemService } from './manageProblem/services/manageProblem.ser
 
 import { CreateProblemDto } from './manageProblem/dtos/createProblem.dto';
 import { CreateProblemResponse } from './manageProblem/responses/createProblem.response';
+import { FindOneProblemDto } from './manageProblem/dtos/findOneProblem.dto';
+import { FindOneProblemResponse } from './manageProblem/responses/findOneProblem.response';
 import { FindProblemDto } from './manageProblem/dtos/findProblem.dto';
 import { FindProblemResponse } from './manageProblem/responses/findProblem.response';
-import { FindAllProblemDto } from './manageProblem/dtos/findAllProblem.dto';
-import { FindAllProblemResponse } from './manageProblem/responses/findAllProblem.response';
 
 import { CreateProblemExampleDto } from './manageProblem/dtos/createProblemExample.dto';
 import { FindProblemExampleDto } from './manageProblem/dtos/findProblemExample.dto';
@@ -79,13 +79,13 @@ export class ProblemController {
 
   @Get(':id')
   @HttpCode(200)
-  async find(@Param() findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
-    return (await this.__manageProblemService.find(findProblemDto))
+  async findOne(@Param() findOneProblemDto: FindOneProblemDto): Promise<FindOneProblemResponse> {
+    return (await this.__manageProblemService.findOne(findOneProblemDto))
   }
 
   @Get()
   @HttpCode(200)
-  async findAll(@Query() findAllProblemDto: FindAllProblemDto): Promise<FindAllProblemResponse> {
-    return (await this.__manageProblemService.findAll(findAllProblemDto))
+  async find(@Query() findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
+    return (await this.__manageProblemService.find(findProblemDto))
   }
 }

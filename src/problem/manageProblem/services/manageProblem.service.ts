@@ -5,10 +5,10 @@ import { Repository } from 'typeorm';
 import { ProblemEntity } from '../../components/entities/problem.entity';
 import { CreateProblemDto } from '../dtos/createProblem.dto';
 import { CreateProblemResponse } from '../responses/createProblem.response';
+import { FindOneProblemDto } from '../dtos/findOneProblem.dto';
+import { FindOneProblemResponse } from '../responses/findOneProblem.response';
 import { FindProblemDto } from '../dtos/findProblem.dto';
 import { FindProblemResponse } from '../responses/findProblem.response';
-import { FindAllProblemDto } from '../dtos/findAllProblem.dto';
-import { FindAllProblemResponse } from '../responses/findAllProblem.response';
 
 import { ExampleEntity } from '../../components/entities/example.entity';
 import { CreateProblemExampleDto } from '../dtos/createProblemExample.dto';
@@ -50,9 +50,9 @@ export class ManageProblemService {
         }
     }
 
-    async find(findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
+    async findOne(findOneProblemDto: FindOneProblemDto): Promise<FindOneProblemResponse> {
         const FOUND_PROBLEM_ENTITY:ProblemEntity = await this.__problemRepository.findOne({
-            where: {id: findProblemDto.id}
+            where: {id: findOneProblemDto.id}
         })
         if(FOUND_PROBLEM_ENTITY == null) throw new ProblemNotFoundException()
         
@@ -70,11 +70,11 @@ export class ManageProblemService {
         }
     }
 
-    async findAll(findAllProblemDto: FindAllProblemDto): Promise<FindAllProblemResponse> {
+    async find(findProblemDto: FindProblemDto): Promise<FindProblemResponse> {
         const ROW_PER_PAGE:number = 50
 
         
-        const FIND_ALL_PROBLEM_RESPONSE = new FindAllProblemResponse()
+        const FIND_PROBLEM_RESPONSE = new FindProblemResponse()
 
         const FOUND_PROBLEM_ENTITIES:ProblemEntity[] = await this.__problemRepository.find({
             select: {
@@ -84,13 +84,13 @@ export class ManageProblemService {
             order: {
                 id: "ASC"
             },
-            skip: ROW_PER_PAGE*(findAllProblemDto.page-1),
+            skip: ROW_PER_PAGE*(findProblemDto.page-1),
             take: ROW_PER_PAGE
         })
-        FIND_ALL_PROBLEM_RESPONSE.briefProblemInfos = FOUND_PROBLEM_ENTITIES.map((entity) => {
+        FIND_PROBLEM_RESPONSE.briefProblemInfos = FOUND_PROBLEM_ENTITIES.map((entity) => {
             return {id: entity.id, title: entity.title}
         })
-        return FIND_ALL_PROBLEM_RESPONSE
+        return FIND_PROBLEM_RESPONSE
     }
 
     

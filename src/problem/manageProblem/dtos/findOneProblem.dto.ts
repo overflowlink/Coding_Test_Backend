@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class FindAllProblemDto {
+export class FindOneProblemDto {
     @IsNotEmpty()
-    page: number
+    id: number
 }

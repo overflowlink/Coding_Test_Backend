@@ -1,12 +1,8 @@
 export class FindProblemResponse {
+    briefProblemInfos: BriefProblemInfo[]
+}
+
+export class BriefProblemInfo {
     id: number
     title: string
-
-    timeLimitSecond: number
-    memoryLimitMb: number
-
-    problemExplain: string
-    inputExplain: string
-    outputExplain: string
-    note: string
 }
