@@ -43,19 +43,6 @@ export class ProblemController {
   async findSubmission(@Query() findSubmissionDto: FindSubmissionDto): Promise<FindSubmissionResponse> {
     return (await this.__manageSubmissionService.find(findSubmissionDto))
   }
-  
-
-  @Post("example")
-  @HttpCode(200)
-  async createExample(@Body() createProblemExampleDto: CreateProblemExampleDto): Promise<void> {
-    await this.__manageProblemService.createExample(createProblemExampleDto)
-  }
-
-  @Get("example/:problemId")
-  @HttpCode(200)
-  async findExample(@Param() findProblemExampleDto: FindProblemExampleDto): Promise<FindProblemExampleResponse> {
-    return (await this.__manageProblemService.findExample(findProblemExampleDto))
-  }
 
 
   @Post("testcase")
@@ -68,6 +55,19 @@ export class ProblemController {
   @HttpCode(200)
   async findTestcase(@Param() findProblemTestcaseDto: FindProblemTestcaseDto): Promise<FindProblemTestcaseResponse> {
     return (await this.__manageProblemService.findTestcase(findProblemTestcaseDto))
+  }
+
+
+  @Post("example")
+  @HttpCode(200)
+  async createExample(@Body() createProblemExampleDto: CreateProblemExampleDto): Promise<void> {
+    await this.__manageProblemService.createExample(createProblemExampleDto)
+  }
+
+  @Get("example/:problemId")
+  @HttpCode(200)
+  async findExample(@Param() findProblemExampleDto: FindProblemExampleDto): Promise<FindProblemExampleResponse> {
+    return (await this.__manageProblemService.findExample(findProblemExampleDto))
   }
 
 
