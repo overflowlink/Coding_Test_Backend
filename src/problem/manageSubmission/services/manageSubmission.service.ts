@@ -50,7 +50,7 @@ export class ManageSubmissionService {
         FIND_SUBMISSION_RESPONSE.submissionInfos = FOUND_SUBMISSION_ENTITIES.map((entity) => {
             return {
                 id: entity.id,
-                timeSecond: entity.timeSecond, memoryMb: entity.memoryMb, verdict: entity.verdict,
+                timeMilisecond: entity.timeMilisecond, memoryKb: entity.memoryKb, verdict: entity.verdict,
                 language: entity.language, code: entity.code.toString(),
                 sentAt: entity.sentAt, judgedAt: entity.judgedAt,
                 problemId: entity.problem.id

@@ -6,9 +6,9 @@ export class SubmissionInfo {
     id: number
 
 
-    timeSecond: number
+    timeMilisecond: number
 
-    memoryMb: number
+    memoryKb: number
 
     verdict: string
 

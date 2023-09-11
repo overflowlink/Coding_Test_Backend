@@ -8,10 +8,10 @@ export class SubmissionEntity {
 
 
     @Column({ nullable: true })
-    timeSecond: number
+    timeMilisecond: number
     
     @Column({ nullable: true })
-    memoryMb: number
+    memoryKb: number
 
     @Column()
     verdict: string
